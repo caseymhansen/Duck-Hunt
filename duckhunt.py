@@ -149,8 +149,7 @@ while run:
         duckCount = len(ducks)
         print(duckCount)
 
-    # Checks if the ducks on the screen have flown off the screen and will delete them from
-    # the screen and add a new duck to the screen
+    # Checks if the ducks on the screen have flown off the screen and will delete them from the screen
     for flyboi in ducks:
         if flyboi.y <= 0 or flyboi.x >= 800 or flyboi.x <= 0:
             ducks.pop(ducks.index(flyboi))
@@ -158,6 +157,7 @@ while run:
     # Code for shooting the ducks and removing them from the screen
     event = pygame.event.get()
     if pygame.mouse.get_pressed()[0]:
+        # Gets the position of the mouse cursor on the screen and returns it in a tuple form (x, y)
         mousePos = pygame.mouse.get_pos()
         for flyboi in ducks:
             if math.sqrt(math.pow(flyboi.x - mousePos[0], 2) + math.pow(flyboi.y - mousePos[1], 2)) < 30:
