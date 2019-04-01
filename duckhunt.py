@@ -102,7 +102,7 @@ def redrawGameWindow():
     win.blit(bg, (0, 0))
     for fly in ducks:
         fly.draw(win)
-    #win.blit(grass, (0, 0))
+    win.blit(grass, (0, 0))
     pygame.display.update()
 
 def addDuck():
