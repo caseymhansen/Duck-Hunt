@@ -107,7 +107,7 @@ def redrawGameWindow():
 
 def addDuck():
     newX = random.randint(100, 700)
-    newColor = random.randint(1, 4)
+    newColor = random.randint(1, 3)
     velocity = -1
     if newColor == 1:
         velocity = 5
@@ -144,9 +144,6 @@ while run:
             run = False
 
     duckCount = len(ducks)
-    """for x in range(duckCount, 7):
-        addDuck()"""
-
     while duckCount < 7:
         addDuck()
         duckCount = len(ducks)
@@ -156,18 +153,15 @@ while run:
     # the screen and add a new duck to the screen
     for flyboi in ducks:
         if flyboi.y <= 0 or flyboi.x >= 800 or flyboi.x <= 0:
-            addDuck()
             ducks.pop(ducks.index(flyboi))
 
     # Code for shooting the ducks and removing them from the screen
     event = pygame.event.get()
     if pygame.mouse.get_pressed()[0]:
         mousePos = pygame.mouse.get_pos()
-        print(mousePos)
         for flyboi in ducks:
             if math.sqrt(math.pow(flyboi.x - mousePos[0], 2) + math.pow(flyboi.y - mousePos[1], 2)) < 30:
                 if ducks.__contains__(flyboi):
-                    addDuck()
                     ducks.pop(ducks.index(flyboi))
 
     redrawGameWindow()
