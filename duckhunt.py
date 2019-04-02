@@ -41,9 +41,7 @@ class duck:
         self.dy = 0  # Change in y of next flight point
         self.left = False  # Facing left variable
         self.right = False  # Facing right variable
-        self.dead = False  # For when a duck dies
         self.flightCount = 0  # Used for the duck animation
-        self.hitbox = -1  # Sets the hitbox of the duck
 
     # Draws the duck
     def draw(self, win):
@@ -102,7 +100,23 @@ def redrawGameWindow():
     win.blit(bg, (0, 0))
     for fly in ducks:
         fly.draw(win)
+    text = font.render("Score: " + str(score), 1, (0, 0, 0))
+    win.blit(text, (50, 525))
+    timer = font.render(str(time)[0:4], 1, (0, 0, 0))
+    win.blit(timer, (380, 525))
+    greenScore = font.render("Green: 25 Points", 1, (0, 0, 0))
+    blueScore = font.render("Blue: 50 Points", 1, (0, 0, 0))
+    redScore = font.render("Red: 75 Points", 1, (0, 0, 0))
+    win.blit(greenScore, (600, 510))
+    win.blit(blueScore, (600, 535))
+    win.blit(redScore, (600, 560))
     win.blit(grass, (0, 0))
+    pygame.display.update()
+
+def drawGameOver():
+    win.fill((0, 0, 0))
+    gameOver = font.render("Your Score: " + str(score), 1, (255, 255, 255))
+    win.blit(gameOver, (300, 200))
     pygame.display.update()
 
 def addDuck():
@@ -121,17 +135,11 @@ def addDuck():
     newDuck.draw(win)
 
 
-# Main Loop
 run = True
 ducks = []
-# test = duck(100, 420, 60, 60, 1, 5)
-# test2 = duck(50, 420, 60, 60, 2, 5)
-# test.right = True
-# test2.right = True
-# test2.flightPoint()
-# test.flightPoint()
-# ducks.append(test)
-# ducks.append(test2)
+font = pygame.font.SysFont('Comic Sans MS', 24, True)
+pygame.time.set_timer(pygame.USEREVENT, 100)
+time = 30.0
 score = 0
 duckCount = 0
 
@@ -140,6 +148,13 @@ while run:
     clock.tick(30)
     # Closes the game window when the X in the top left is clicked
     for event in pygame.event.get():
+        if event.type == pygame.USEREVENT:
+            if time <= 0:
+                drawGameOver()
+                pygame.time.delay(5000)
+                run = False
+                break
+            time -= 0.1
         if event.type == pygame.QUIT:
             run = False
 
@@ -147,7 +162,6 @@ while run:
     while duckCount < 7:
         addDuck()
         duckCount = len(ducks)
-        print(duckCount)
 
     # Checks if the ducks on the screen have flown off the screen and will delete them from the screen
     for flyboi in ducks:
@@ -162,6 +176,12 @@ while run:
         for flyboi in ducks:
             if math.sqrt(math.pow(flyboi.x - mousePos[0], 2) + math.pow(flyboi.y - mousePos[1], 2)) < 30:
                 if ducks.__contains__(flyboi):
+                    if flyboi.color == 1:
+                        score += 25
+                    elif flyboi.color == 2:
+                        score += 50
+                    elif flyboi.color == 3:
+                        score += 75
                     ducks.pop(ducks.index(flyboi))
 
     redrawGameWindow()
